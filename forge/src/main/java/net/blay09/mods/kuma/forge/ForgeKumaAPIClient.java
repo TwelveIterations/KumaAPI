@@ -1,5 +1,6 @@
 package net.blay09.mods.kuma.forge;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.blay09.mods.kuma.ManagedKeyMappingRegistry;
 import net.blay09.mods.kuma.ManagedVanillaKeyMapping;
 import net.blay09.mods.kuma.NativeKeyModifierReconciler;
@@ -76,7 +77,7 @@ public class ForgeKumaAPIClient {
                     continue;
                 }
 
-                if (event.getAction() == 1 && keyMapping.isActiveAndMatchesKey(event.getKey(), event.getScanCode(), event.getModifiers())) {
+                if (event.getAction() == InputConstants.PRESS && keyMapping.isActiveAndMatchesKey(event.getKey(), event.getKeycode(), event.getModifiers())) {
                     keyMapping.handleWorldInput(new WorldInputEvent(event.getInfo(), keyMapping));
                     // TODO cannot cancel?
                 }
@@ -119,7 +120,7 @@ public class ForgeKumaAPIClient {
                     continue;
                 }
 
-                if (keyMapping.isActiveAndMatchesKey(event.getKeyCode(), event.getScanCode(), event.getModifiers())) {
+                if (keyMapping.isActiveAndMatchesKey(event.getKey(), event.getKeycode(), event.getModifiers())) {
                     final var client = Minecraft.getInstance();
                     final var window = client.getWindow();
                     int mouseX = Mth.floor(client.mouseHandler.xpos() * (double) window.getGuiScaledWidth() / (double) window.getScreenWidth());

@@ -99,12 +99,12 @@ public interface ManagedKeyMapping {
      * Checks if the {@link KeyConflictContext} associated with this managed key mapping is currently active, its modifiers are active, and the specified key, scan code, and modifiers match the current input.
      *
      * @param key       The key to check.
-     * @param scanCode  The scan code to check.
+     * @param keycode  The key code to check.
      * @param modifiers The modifiers to check.
      * @return True if the key conflict context, modifiers, and input match, false otherwise.
      */
-    default boolean isActiveAndMatchesKey(int key, int scanCode, int modifiers) {
-        return isContextActive() && areModifiersActive() && matchesKey(key, scanCode, modifiers);
+    default boolean isActiveAndMatchesKey(int key, int keycode, int modifiers) {
+        return isContextActive() && areModifiersActive() && matchesKey(key, keycode, modifiers);
     }
 
     /**
@@ -148,14 +148,14 @@ public interface ManagedKeyMapping {
     boolean matchesMouse(int button);
 
     /**
-     * Checks if the bound input matches the given key, scan code, and modifiers.
+     * Checks if the bound input matches the given key, key code, and modifiers.
      *
      * @param key       The key to check.
-     * @param scanCode  The scan code to check.
+     * @param keycode  The key code to check.
      * @param modifiers The modifiers to check.
-     * @return True if the bound input matches the given key, scan code, and modifiers, false otherwise.
+     * @return True if the bound input matches the given key, key code, and modifiers, false otherwise.
      */
-    boolean matchesKey(int key, int scanCode, int modifiers);
+    boolean matchesKey(int key, int keycode, int modifiers);
 
     /**
      * Invokes the screen input event handler for this key mapping.

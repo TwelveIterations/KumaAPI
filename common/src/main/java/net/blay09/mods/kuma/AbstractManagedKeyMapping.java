@@ -84,7 +84,7 @@ public abstract class AbstractManagedKeyMapping implements ManagedKeyMapping, Ti
     }
 
     @Override
-    public boolean matchesKey(int key, int keyCode, int modifiers) {
+    public boolean matchesKey(int key, int keycode, int modifiers) {
         if (isUnbound()) {
             return false;
         }
