@@ -80,7 +80,7 @@ public class NeoForgeKumaAPI {
 
                 if (event.getAction() == InputConstants.PRESS && keyMapping.isActiveAndMatchesKey(event.getKeyEvent())) {
                     keyMapping.handleWorldInput(new WorldInputEvent(event.getKeyEvent(), keyMapping));
-                    // TODO cannot cancel?
+                    return;
                 }
             }
         });
@@ -148,6 +148,7 @@ public class NeoForgeKumaAPI {
                 if (keyMapping.isActiveAndMatchesMouse(event.getButton())) {
                     if (keyMapping.handleScreenInput(new ScreenInputEvent(event.getScreen(), event.getMouseButtonEvent(), event.getMouseX(), event.getMouseY(), keyMapping))) {
                         event.setCanceled(true);
+                        return;
                     }
                 }
             }

@@ -79,7 +79,7 @@ public class ForgeKumaAPIClient {
 
                 if (event.getAction() == InputConstants.PRESS && keyMapping.isActiveAndMatchesKey(event.getKey(), event.getKeycode(), event.getModifiers())) {
                     keyMapping.handleWorldInput(new WorldInputEvent(event.getInfo(), keyMapping));
-                    // TODO cannot cancel?
+                    return;
                 }
             }
         });
