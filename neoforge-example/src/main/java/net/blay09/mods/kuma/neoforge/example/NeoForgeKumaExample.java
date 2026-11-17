@@ -18,5 +18,29 @@ public class NeoForgeKumaExample {
                     return true;
                 })
                 .build();
+
+        Kuma.createKeyMapping(Identifier.fromNamespaceAndPath("kuma_example", "x_test"))
+                .withDefault(InputBinding.key(InputConstants.KEY_X))
+                .handleWorldInput(event -> {
+                    System.out.println("X pressed in world");
+                    return true;
+                })
+                .handleScreenInput(event -> {
+                    System.out.println("ALT+X pressed in screen");
+                    return true;
+                })
+                .build();
+
+        Kuma.createKeyMapping(Identifier.fromNamespaceAndPath("kuma_example", "alt_x_test"))
+                .withDefault(InputBinding.key(InputConstants.KEY_X, KeyModifiers.of(KeyModifier.ALT)))
+                .handleWorldInput(event -> {
+                    System.out.println("ALT+X pressed in world");
+                    return true;
+                })
+                .handleScreenInput(event -> {
+                    System.out.println("ALT+X pressed in screen");
+                    return true;
+                })
+                .build();
     }
 }
