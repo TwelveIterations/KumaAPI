@@ -12,6 +12,7 @@ import java.util.Objects;
  * <li><code>UNIVERSAL</code>: Key conflicts apply globally, across both screens and world interaction.</li>
  * <li><code>SCREEN</code>: Key conflicts are limited to key mappings within screens.</li>
  * <li><code>WORLD</code>: Key conflicts are limited to key mappings within world interaction.</li>
+ * <li><code>DEBUG</code>: Exempt from key conflicts, only active while the debug modifier key is pressed</li>
  * </ul>
  */
 public class KeyConflictContext {
@@ -19,21 +20,32 @@ public class KeyConflictContext {
     public static final KeyConflictContext UNIVERSAL = new KeyConflictContext(Identifier.fromNamespaceAndPath("kuma", "universal")) {
         @Override
         public boolean conflictsWith(KeyConflictContext other) {
-            return true;
+            return other != DEBUG; // matching Vanilla's special casing of their debug key conflicts
         }
     };
 
     public static final KeyConflictContext SCREEN = new KeyConflictContext(Identifier.fromNamespaceAndPath("kuma", "screen")) {
         @Override
+        @SuppressWarnings("ConstantValue")
         public boolean isActive() {
-            return Minecraft.getInstance().gui.screen() != null;
+            final var client = Minecraft.getInstance();
+            return client != null && client.gui.screen() != null;
         }
     };
     public static final KeyConflictContext WORLD = new KeyConflictContext(Identifier.fromNamespaceAndPath("kuma", "world")) {
         @Override
+        @SuppressWarnings("ConstantValue")
         public boolean isActive() {
             final var client = Minecraft.getInstance();
-            return client.gui.screen() == null && client.level != null;
+            return client != null && client.gui.screen() == null && client.level != null;
+        }
+    };
+    public static final KeyConflictContext DEBUG = new KeyConflictContext(Identifier.fromNamespaceAndPath("kuma", "debug")) {
+        @Override
+        @SuppressWarnings("ConstantValue")
+        public boolean isActive() {
+            final var client = Minecraft.getInstance();
+            return client != null && client.options.keyDebugModifier.isDown();
         }
     };
 
