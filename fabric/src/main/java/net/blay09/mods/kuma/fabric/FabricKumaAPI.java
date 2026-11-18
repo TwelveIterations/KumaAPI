@@ -55,8 +55,8 @@ public class FabricKumaAPI implements ClientModInitializer {
 
                     if (keyMapping.isActiveAndMatchesKey(event)) {
                         final var window = client.getWindow();
-                        int mouseX = Mth.floor(client.mouseHandler.xpos() * (double) window.getGuiScaledWidth() / (double) window.getScreenWidth());
-                        int mouseY = Mth.floor(client.mouseHandler.ypos() * (double) window.getGuiScaledHeight() / (double) window.getScreenHeight());
+                        int mouseX = Mth.floor(client.mouseHandler.getScaledXPos(window));
+                        int mouseY = Mth.floor(client.mouseHandler.getScaledYPos(window));
                         final var inputEvent = new ScreenInputEvent(pressedScreen, event, mouseX, mouseY, keyMapping);
                         if (keyMapping.ignoresScreenFocus() || !inputEvent.hasFocusedElement()) {
                             if (keyMapping.handleScreenInput(inputEvent)) {
