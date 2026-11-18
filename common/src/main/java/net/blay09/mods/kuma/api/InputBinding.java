@@ -52,7 +52,7 @@ public record InputBinding(InputConstants.Key key, KeyModifiers modifiers) {
      * @return a new {@link InputBinding} for the specified key and modifiers
      */
     public static InputBinding key(int keyCode, KeyModifiers modifiers) {
-        return new InputBinding(InputConstants.getKey(new KeyEvent(keyCode, 0, 0)), modifiers);
+        return new InputBinding(InputConstants.getKey(new KeyEvent(keyCode, 0, 0, false)), modifiers);
     }
 
     /**
