@@ -273,7 +273,7 @@ public interface ManagedKeyMapping {
 
         /**
          * Sets the category for this key mapping. The category is used to group related key mappings together in the controls menu.
-         * By default, the category is set to <code>key.categories.[namespace].default</code> where <code>[namespace]</code> is the namespace of the key mapping's id
+         * By default, the category is set to <code>key.category.[namespace].default</code> where <code>[namespace]</code> is the namespace of the key mapping's id
          *
          * @param category The category for this key mapping.
          * @return This builder instance, for chaining.
