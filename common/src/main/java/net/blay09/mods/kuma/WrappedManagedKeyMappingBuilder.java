@@ -59,7 +59,7 @@ public class WrappedManagedKeyMappingBuilder extends AbstractManagedKeyMappingBu
 
     @Override
     public ManagedKeyMapping build() {
-        final var managedKeyMapping = new ManagedWrappedKeyMapping(id, keyMapping, determineContext(), screenInputHandler, worldInputHandler, keyRepeat, ignoresScreenFocus, defaultBinding, storage);
+        final var managedKeyMapping = new ManagedWrappedKeyMapping(id, keyMapping, determineContext(), screenInputHandler, worldInputHandler, keyRepeat, screenInputPredicate, worldInputPredicate, defaultBinding, storage);
         managedKeyMapping.wrap();
         managedKeyMapping.getStorage().loadKeyMapping(managedKeyMapping);
         NativeKeyModifierReconciler.reconcile(keyMapping);

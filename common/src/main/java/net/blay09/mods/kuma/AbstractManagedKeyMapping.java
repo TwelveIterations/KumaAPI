@@ -11,6 +11,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import org.jspecify.annotations.Nullable;
 
+import java.util.function.Predicate;
+
 public abstract class AbstractManagedKeyMapping implements ManagedKeyMapping, TickableKeyMapping {
 
     private final Identifier id;
@@ -20,18 +22,20 @@ public abstract class AbstractManagedKeyMapping implements ManagedKeyMapping, Ti
     @Nullable
     private final WorldInputEventHandler worldInputEventHandler;
     private final boolean keyRepeat;
-    private final boolean ignoresScreenFocus;
+    private final Predicate<ScreenInputEvent> screenInputPredicate;
+    private final Predicate<WorldInputEvent> worldInputPredicate;
     private final InputBinding defaultBinding;
     private final KeyMappingStorage storage;
     private boolean wasDown;
 
-    public AbstractManagedKeyMapping(Identifier id, KeyConflictContext context, @Nullable ScreenInputEventHandler screenInputEventHandler, @Nullable WorldInputEventHandler worldInputEventHandler, boolean keyRepeat, boolean ignoresScreenFocus, InputBinding defaultBinding, KeyMappingStorage storage) {
+    public AbstractManagedKeyMapping(Identifier id, KeyConflictContext context, @Nullable ScreenInputEventHandler screenInputEventHandler, @Nullable WorldInputEventHandler worldInputEventHandler, boolean keyRepeat, Predicate<ScreenInputEvent> screenInputPredicate, Predicate<WorldInputEvent> worldInputPredicate, InputBinding defaultBinding, KeyMappingStorage storage) {
         this.id = id;
         this.context = context;
         this.screenInputEventHandler = screenInputEventHandler;
         this.worldInputEventHandler = worldInputEventHandler;
         this.keyRepeat = keyRepeat;
-        this.ignoresScreenFocus = ignoresScreenFocus;
+        this.screenInputPredicate = screenInputPredicate;
+        this.worldInputPredicate = worldInputPredicate;
         this.defaultBinding = defaultBinding;
         this.storage = storage;
     }
@@ -102,7 +106,7 @@ public abstract class AbstractManagedKeyMapping implements ManagedKeyMapping, Ti
             return false;
         }
 
-        return screenInputEventHandler.handle(event);
+        return screenInputPredicate.test(event) && screenInputEventHandler.handle(event);
     }
 
     @Override
@@ -111,7 +115,7 @@ public abstract class AbstractManagedKeyMapping implements ManagedKeyMapping, Ti
             return false;
         }
 
-        return worldInputEventHandler.handle(event);
+        return worldInputPredicate.test(event) && worldInputEventHandler.handle(event);
     }
 
     @Override
@@ -125,8 +129,13 @@ public abstract class AbstractManagedKeyMapping implements ManagedKeyMapping, Ti
     }
 
     @Override
-    public boolean ignoresScreenFocus() {
-        return ignoresScreenFocus;
+    public Predicate<ScreenInputEvent> getScreenInputPredicate() {
+        return screenInputPredicate;
+    }
+
+    @Override
+    public Predicate<WorldInputEvent> getWorldInputPredicate() {
+        return worldInputPredicate;
     }
 
     @Override

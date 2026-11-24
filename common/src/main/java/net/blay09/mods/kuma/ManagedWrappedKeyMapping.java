@@ -5,12 +5,14 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.resources.Identifier;
 import org.jspecify.annotations.Nullable;
 
+import java.util.function.Predicate;
+
 public class ManagedWrappedKeyMapping extends AbstractManagedKeyMapping {
 
     private final KeyMapping mapping;
 
-    public ManagedWrappedKeyMapping(Identifier id, KeyMapping mapping, KeyConflictContext context, @Nullable ScreenInputEventHandler screenInputEventHandler, @Nullable WorldInputEventHandler worldInputEventHandler, boolean keyRepeat, boolean ignoresScreenFocus, InputBinding defaultBinding, KeyMappingStorage storage) {
-        super(id, context, screenInputEventHandler, worldInputEventHandler, keyRepeat, ignoresScreenFocus, defaultBinding, storage);
+    public ManagedWrappedKeyMapping(Identifier id, KeyMapping mapping, KeyConflictContext context, @Nullable ScreenInputEventHandler screenInputEventHandler, @Nullable WorldInputEventHandler worldInputEventHandler, boolean keyRepeat, Predicate<ScreenInputEvent> screenInputPredicate, Predicate<WorldInputEvent> worldInputPredicate, InputBinding defaultBinding, KeyMappingStorage storage) {
+        super(id, context, screenInputEventHandler, worldInputEventHandler, keyRepeat, screenInputPredicate, worldInputPredicate, defaultBinding, storage);
         this.mapping = mapping;
     }
 

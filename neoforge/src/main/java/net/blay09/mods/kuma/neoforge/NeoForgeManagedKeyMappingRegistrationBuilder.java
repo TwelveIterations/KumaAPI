@@ -16,7 +16,7 @@ public class NeoForgeManagedKeyMappingRegistrationBuilder extends AbstractManage
 
     @Override
     protected ManagedKeyMapping createVanillaKeyMapping(Identifier id, String name, InputBinding binding, KeyConflictContext context) {
-        return new ManagedVanillaKeyMapping(id, context, screenInputHandler, worldInputHandler, keyRepeat, ignoresScreenFocus, binding, storage, () -> {
+        return new ManagedVanillaKeyMapping(id, context, screenInputHandler, worldInputHandler, keyRepeat, screenInputPredicate, worldInputPredicate, binding, storage, () -> {
             final var defaultKey = binding.key();
             return new KeyMapping(name, defaultKey.getType(), defaultKey.getValue(), category);
         });

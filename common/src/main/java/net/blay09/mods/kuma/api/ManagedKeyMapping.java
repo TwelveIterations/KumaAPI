@@ -9,6 +9,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * Represents a managed key mapping that can be used to handle input events.
@@ -202,11 +203,16 @@ public interface ManagedKeyMapping {
     boolean isKeyRepeatEnabled();
 
     /**
-     * By default, screen handlers are not fired if a widget on a screen has focus (e.g. a text field), unless this returns true.
-     *
-     * @return True if this key mapping fires on screens even if the screen has a widget focused.
+     * Returns the predicate that permits screen input handlers to run.
+     * By default, keyboard input is skipped while the screen captures input; mouse input is always handled.
      */
-    boolean ignoresScreenFocus();
+    Predicate<ScreenInputEvent> getScreenInputPredicate();
+
+    /**
+     * Returns the predicate that permits world input handlers to run.
+     * By default, world input is always handled.
+     */
+    Predicate<WorldInputEvent> getWorldInputPredicate();
 
     KeyMappingStorage getStorage();
 
@@ -239,12 +245,22 @@ public interface ManagedKeyMapping {
         T handleScreenInput(ScreenInputEventHandler handler);
 
         /**
-         * By default, screen handlers are not fired if a widget on a screen has focus (e.g. a text field).
-         * Call this method to have screen events fired regardless of focus.
+         * Replaces the predicate that permits screen input handlers to run.
+         * By default, keyboard input is skipped while the screen captures input, while mouse input is always handled.
          *
+         * @param predicate Returns true to run the handler, false to skip it.
          * @return This builder instance, for chaining.
          */
-        T ignoreScreenFocus();
+        T withScreenInputPredicate(Predicate<ScreenInputEvent> predicate);
+
+        /**
+         * Replaces the predicate that permits world input handlers to run.
+         * By default, world input is always handled.
+         *
+         * @param predicate Returns true to run the handler, false to skip it.
+         * @return This builder instance, for chaining.
+         */
+        T withWorldInputPredicate(Predicate<WorldInputEvent> predicate);
 
         /**
          * Enabling key repeat will cause handle*Input() handlers to be called repeatedly if the key is held down.

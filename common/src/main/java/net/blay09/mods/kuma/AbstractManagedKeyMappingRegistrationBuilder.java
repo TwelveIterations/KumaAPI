@@ -80,7 +80,7 @@ public abstract class AbstractManagedKeyMappingRegistrationBuilder extends Abstr
     }
 
     protected ManagedKeyMapping createVirtualKeyMapping(Identifier id, KeyConflictContext context) {
-        return new ManagedVirtualKeyMapping(id, context, screenInputHandler, worldInputHandler, keyRepeat, ignoresScreenFocus, defaultBinding, storage);
+        return new ManagedVirtualKeyMapping(id, context, screenInputHandler, worldInputHandler, keyRepeat, screenInputPredicate, worldInputPredicate, defaultBinding, storage);
     }
 
     protected abstract ManagedKeyMapping createVanillaKeyMapping(Identifier id, String name, InputBinding binding, KeyConflictContext context);

@@ -5,6 +5,7 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.resources.Identifier;
 import org.jspecify.annotations.Nullable;
 
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public class ManagedVanillaKeyMapping extends AbstractManagedKeyMapping {
@@ -13,8 +14,8 @@ public class ManagedVanillaKeyMapping extends AbstractManagedKeyMapping {
     @Nullable
     private KeyMapping mapping;
 
-    public ManagedVanillaKeyMapping(Identifier id, KeyConflictContext context, @Nullable ScreenInputEventHandler screenInputEventHandler, @Nullable WorldInputEventHandler worldInputEventHandler, boolean keyRepeat, boolean ignoresScreenFocus, InputBinding defaultBinding, KeyMappingStorage storage, Supplier<KeyMapping> mappingSupplier) {
-        super(id, context, screenInputEventHandler, worldInputEventHandler, keyRepeat, ignoresScreenFocus, defaultBinding, storage);
+    public ManagedVanillaKeyMapping(Identifier id, KeyConflictContext context, @Nullable ScreenInputEventHandler screenInputEventHandler, @Nullable WorldInputEventHandler worldInputEventHandler, boolean keyRepeat, Predicate<ScreenInputEvent> screenInputPredicate, Predicate<WorldInputEvent> worldInputPredicate, InputBinding defaultBinding, KeyMappingStorage storage, Supplier<KeyMapping> mappingSupplier) {
+        super(id, context, screenInputEventHandler, worldInputEventHandler, keyRepeat, screenInputPredicate, worldInputPredicate, defaultBinding, storage);
         this.mappingSupplier = mappingSupplier;
     }
 

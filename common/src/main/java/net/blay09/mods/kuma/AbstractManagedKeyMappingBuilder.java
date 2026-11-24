@@ -1,8 +1,12 @@
 package net.blay09.mods.kuma;
 
 import net.blay09.mods.kuma.api.*;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.resources.Identifier;
 import org.jspecify.annotations.Nullable;
+
+import java.util.Objects;
+import java.util.function.Predicate;
 
 public abstract class AbstractManagedKeyMappingBuilder<T> {
 
@@ -13,7 +17,8 @@ public abstract class AbstractManagedKeyMappingBuilder<T> {
     @Nullable
     protected ScreenInputEventHandler screenInputHandler;
     protected boolean keyRepeat = false;
-    protected boolean ignoresScreenFocus = false;
+    protected Predicate<ScreenInputEvent> screenInputPredicate = this::defaultScreenInputPredicate;
+    protected Predicate<WorldInputEvent> worldInputPredicate = this::defaultWorldInputPredicate;
     protected KeyMappingStorage storage = Kuma.getDefaultStorage();
 
     protected AbstractManagedKeyMappingBuilder(Identifier id) {
@@ -42,8 +47,13 @@ public abstract class AbstractManagedKeyMappingBuilder<T> {
         return self();
     }
 
-    public T ignoreScreenFocus() {
-        ignoresScreenFocus = true;
+    public T withScreenInputPredicate(Predicate<ScreenInputEvent> predicate) {
+        screenInputPredicate = Objects.requireNonNull(predicate);
+        return self();
+    }
+
+    public T withWorldInputPredicate(Predicate<WorldInputEvent> predicate) {
+        worldInputPredicate = Objects.requireNonNull(predicate);
         return self();
     }
 
@@ -55,5 +65,13 @@ public abstract class AbstractManagedKeyMappingBuilder<T> {
             return KeyConflictContext.SCREEN;
         }
         return KeyConflictContext.UNIVERSAL;
+    }
+
+    protected boolean defaultScreenInputPredicate(ScreenInputEvent event) {
+        return !(event.input() instanceof KeyEvent) || !event.screen().isInputCaptured();
+    }
+
+    protected boolean defaultWorldInputPredicate(WorldInputEvent event) {
+        return true;
     }
 }
